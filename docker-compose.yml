@@ -1,13 +1,15 @@
 version: '2.1'
 
 services:
+  krakend:
+    build: ./api-gateway
+    ports:
+      - "80:8080"
   db:
     image: mysql
     environment:
       MYSQL_ROOT_PASSWORD: 12345
       MYSQL_DATABASE: test-db
-    ports:
-      - "3306:3306"
     container_name: db
   rabbitmq:
     image: rabbitmq:3-alpine
@@ -16,22 +18,31 @@ services:
       interval: 10s
       timeout: 10s
       retries: 3
-    ports:
-      - "5672:5672"
     expose:
       - "5672"
     container_name: rabbitmq
   sv-producer:
     build: ./producer
-  sv-ad:
+    ports:
+      - '80'
+  sv-consumer:
+    build: ./consumer
     depends_on:
       - sv-producer
+    ports:
+      - '80'
+  sv-ad:
     build: ./services/DataAnalytics
+    depends_on:
+      - sv-producer
+      - sv-consumer
+    ports:
+      - '80'
   sv-dr:
     build: ./services/DataRetrieval
     ports:
-      - "8081:80"
+      - '80'
   sv-email:
     build: ./services/Email
     ports:
-      - "8082:80"
+      - '80'

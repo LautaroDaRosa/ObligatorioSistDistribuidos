@@ -3,11 +3,11 @@ import json
 import pika
 from flask import Flask
 
-from services.DatabaseManager import execute_query
+from DatabaseManager import execute_query
 
 app = Flask(__name__)
 
-QUEUE_HOST = 'localhost'
+QUEUE_HOST = 'rabbitmq'
 QUEUE_NAME = 'measurements_queue'
 
 # Creo la conexion con el broker
