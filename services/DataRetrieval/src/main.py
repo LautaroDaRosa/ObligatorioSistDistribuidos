@@ -1,27 +1,20 @@
-from flask import Flask, jsonify
-# import psycopg2
+from flask import jsonify, Blueprint
 
-# conn = psycopg2.connect(database="test-db", user="root", password="12345", host="localhost", port="3306")
-# cur = conn.cursor()
+import DatabaseManager
 
-import pymysql
+bp = Blueprint('DataRetrievalService', __name__)
 
-app = Flask(__name__)
 
-connection = pymysql.connect(
-    host='localhost',
-    user='root',
-    password='12345',
-    db='test-db',
-    port=3306
-)
-
-cursor = connection.cursor()
-
-@app.route('/getData')
+@bp.get('/getData')
 def getData():
-    cursor.execute("SELECT * FROM measurement_data;")
-    rows = cursor.fetchall()
+    rows = DatabaseManager.execute_query("SELECT * FROM medida")
     data = [{'id': row[0], 'producer_id': row[1], 'date': row[2], 'value': row[3]} for row in rows]
     return jsonify(data)
 
+
+@bp.post('/insert')
+def insertData():
+    rows = DatabaseManager.execute_query(
+        "INSERT INTO medida(producer_id,date,value) VALUES(10, '2023-05-04 11:11:11', 5)")
+    data = [{'id': row[0], 'producer_id': row[1], 'date': row[2], 'value': row[3]} for row in rows]
+    return jsonify(data)

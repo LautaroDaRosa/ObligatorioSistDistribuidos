@@ -8,6 +8,20 @@ services:
       MYSQL_DATABASE: test-db
     ports:
       - "3306:3306"
+    container_name: db
+
+  rabbitmq:
+    image: rabbitmq:3-alpine
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 10s
+      retries: 3
+    ports:
+      - "5672:5672"
+    expose:
+      - "5672"
+    container_name: rabbitmq
   ##sv-dr:
   ##  build: ./services/DataRetrieval
   ##  ports:
