@@ -108,7 +108,7 @@ def batch_job():
 # Se programa el proceso batch para que se ejecute cada hora
 schedule.every(5).seconds.do(batch_job)
 
-while True:
-    # Se ejecuta la cola de tareas de schedule
-    schedule.run_pending()
-    time.sleep(5)
+##while True:
+# Se ejecuta la cola de tareas de schedule
+schedule.run_pending()
+time.sleep(5)
