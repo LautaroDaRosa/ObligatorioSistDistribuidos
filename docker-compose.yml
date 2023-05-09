@@ -8,3 +8,15 @@ services:
       MYSQL_DATABASE: test-db
     ports:
       - "3306:3306"
+  ##sv-dr:
+  ##  build: ./services/DataRetrieval
+  ##  ports:
+  ##    - "8081:80"
+  ##sv-ad:
+  ##  build: ./services/DataAnalytics
+  ##  ports:
+  ##    - "8082:80"
+  sv-email:
+    build: ./services/Email
+    ports:
+      - "8083:80"

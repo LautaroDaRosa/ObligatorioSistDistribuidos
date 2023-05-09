@@ -1,7 +1,5 @@
 import smtplib
 import uvicorn
-import requests
-import json
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
@@ -14,10 +12,10 @@ class Email(BaseModel):
 
 app = FastAPI()
 
-@app.post("/send_email")
-def forward(email : Email):
+@app.post("/email")
+def email(email : Email):
     try:
-        return JSONResponse(content = lambda_handler(email), status_code = 200)
+        return JSONResponse(content = send_email(email), status_code = 200)
     except:
         message = "Error executing request"
         return JSONResponse(content = message, status_code = 500)
@@ -25,9 +23,7 @@ def forward(email : Email):
 def get_recipients_emails():
     return ["sisdistribuidos.no.reply@gmail.com"]
 
-
-def lambda_handler(email):
-    
+def send_email(email):
     # Configuración del correo electrónico
     sender_email = "sisdistribuidos.no.reply@gmail.com"
     sender_password = "tgaryhzzmziehmbp"
@@ -61,11 +57,11 @@ def lambda_handler(email):
             sended_emails += 1
         except Exception as e:
             print("Error al enviar el correo electrónico:")
-            print("El error es: " +  e)
+            print("El error es: " +  e.__str__())
     server.quit()
     message = "Se enviaron " + str(sended_emails) + " de " + str(recipient_emails_count)
     print(message)
     return message
 
 if __name__ == "__main__":
-    uvicorn.run(app, port=8080, host="0.0.0.0")
+    uvicorn.run(app, port=80, host="0.0.0.0")

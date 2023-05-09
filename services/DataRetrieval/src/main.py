@@ -1,12 +1,12 @@
 from flask import Flask, jsonify
 # import psycopg2
 
-# app = Flask(__name__)
-
 # conn = psycopg2.connect(database="test-db", user="root", password="12345", host="localhost", port="3306")
 # cur = conn.cursor()
 
 import pymysql
+
+app = Flask(__name__)
 
 connection = pymysql.connect(
     host='localhost',
