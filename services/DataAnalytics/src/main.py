@@ -1,16 +1,17 @@
 import asyncio
+
+import pymysql
+
+import DatabaseManager
 from typing import List
 from datetime import datetime
-from dbconn.db import db_connect, db_disconnect, get_data
 from pydantic import BaseModel
-
 
 class Data(BaseModel):
     id: int
     producer_id: int
     value: float
     date_time: datetime
-
 
 class AnalysisResult(BaseModel):
     mean: float
@@ -25,25 +26,21 @@ async def analyze_data(data_list: List[Data]) -> AnalysisResult:
 
 
 async def periodic_analysis(interval: int):
-    # Obtener la conexión a la base de datos
-    conn = db_connect()
-
     while True:
-        # Obtener los datos de la base de datos
-        data = get_data(conn)
+        try:
+            # Obtener los datos de la base de datos
+            rows = DatabaseManager.execute_query("SELECT * FROM medida")
 
-        # Realizar el análisis de los datos
-        result = await analyze_data(data)
+            # Realizar el análisis de los datos
+            result = await analyze_data(rows)
 
-        # Imprimir el resultado del análisis
-        print(f"Análisis periódico: {result}")
+            # Imprimir el resultado del análisis
+            print(f"Análisis periódico: {result}")
+        except pymysql.err.OperationalError:
+            print("No se pudo hacer la conexion a la base de datos")
 
         # Esperar el tiempo especificado antes de volver a realizar el análisis
         await asyncio.sleep(interval)
-
-    # Cerrar la conexión a la base de datos al finalizar el programa
-    db_disconnect(conn)
-
 
 if __name__ == "__main__":
     # Crear un loop de eventos

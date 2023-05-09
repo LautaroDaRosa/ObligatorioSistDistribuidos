@@ -9,7 +9,6 @@ services:
     ports:
       - "3306:3306"
     container_name: db
-
   rabbitmq:
     image: rabbitmq:3-alpine
     healthcheck:
@@ -22,15 +21,17 @@ services:
     expose:
       - "5672"
     container_name: rabbitmq
-  ##sv-dr:
-  ##  build: ./services/DataRetrieval
-  ##  ports:
-  ##    - "8081:80"
-  ##sv-ad:
-  ##  build: ./services/DataAnalytics
-  ##  ports:
-  ##    - "8082:80"
+  sv-producer:
+    build: ./producer
+  sv-ad:
+    depends_on:
+      - sv-producer
+    build: ./services/DataAnalytics
+  sv-dr:
+    build: ./services/DataRetrieval
+    ports:
+      - "8081:80"
   sv-email:
     build: ./services/Email
     ports:
-      - "8083:80"
+      - "8082:80"

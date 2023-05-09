@@ -1,0 +1,6 @@
+pydantic
+datetime
+typing
+asyncio
+pymysql
+cryptography
