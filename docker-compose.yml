@@ -10,6 +10,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 12345
       MYSQL_DATABASE: test-db
+    volumes:
+      - ./mysql:/docker-entrypoint-initdb.d
     container_name: db
   rabbitmq:
     image: rabbitmq:3-alpine
@@ -27,15 +29,10 @@ services:
       - '80'
   sv-consumer:
     build: ./consumer
-    depends_on:
-      - sv-producer
     ports:
       - '80'
   sv-ad:
     build: ./services/DataAnalytics
-    depends_on:
-      - sv-producer
-      - sv-consumer
     ports:
       - '80'
   sv-dr:

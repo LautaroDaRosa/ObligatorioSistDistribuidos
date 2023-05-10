@@ -1,6 +1,5 @@
 import pymysql
 
-
 def connect_to_database():
     conn = pymysql.connect(
         host='db',
