@@ -6,17 +6,15 @@ app = Flask(__name__)
 
 @app.get('/getData')
 def getData():
-    return "llegue"
-    rows = DatabaseManager.execute_query("SELECT * FROM medida")
+    rows = DatabaseManager.execute_query("SELECT * FROM medition")
     data = [{'id': row[0], 'producer_id': row[1], 'date': row[2], 'value': row[3]} for row in rows]
     return jsonify(data)
 
 
 @app.post('/insert')
 def insertData():
-    return "llegue"
     rows = DatabaseManager.execute_query(
-        "INSERT INTO medida(producer_id,date,value) VALUES(10, '2023-05-04 11:11:11', 5)")
+        "INSERT INTO medition(producer_id,date,value) VALUES(10, '2023-05-04 11:11:11', 5)")
     data = [{'id': row[0], 'producer_id': row[1], 'date': row[2], 'value': row[3]} for row in rows]
     return jsonify(data)
 

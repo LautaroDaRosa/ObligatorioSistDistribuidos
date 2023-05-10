@@ -23,7 +23,7 @@ def callback(ch, method, properties, body):
     # Inserta en la base
     body = json.loads(body)
     print(body)
-    execute_query("INSERT INTO medida(producer_id,date,value) VALUES(%s,%s,%s)", body)
+    execute_query("INSERT INTO medition(producer_id,date,value) VALUES(%s,%s,%s)", body)
     print(" [x] Mensaje recibido %s" % body)
 
 

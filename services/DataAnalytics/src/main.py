@@ -29,15 +29,15 @@ async def periodic_analysis(interval: int):
     while True:
         try:
             # Obtener los datos de la base de datos
-            rows = DatabaseManager.execute_query("SELECT * FROM medida")
+            rows = DatabaseManager.execute_query("SELECT * FROM medition")
 
             # Realizar el análisis de los datos
             result = await analyze_data(rows)
 
             # Imprimir el resultado del análisis
             print(f"Análisis periódico: {result}")
-        except pymysql.err.OperationalError:
-            print("No se pudo hacer la conexion a la base de datos")
+        except:
+            print("No se pudo hacer la consulta a la base de datos")
 
         # Esperar el tiempo especificado antes de volver a realizar el análisis
         await asyncio.sleep(interval)

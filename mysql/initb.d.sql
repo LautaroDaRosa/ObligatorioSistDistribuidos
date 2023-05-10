@@ -1,30 +1,30 @@
-CREATE TABLE medida
+CREATE TABLE medition
 (
     id           int PRIMARY KEY auto_increment,
     sensor_id    int      NOT NULL,
-    fecha        datetime NOT NULL,
-    valor_medido int      NOT NULL,
+    date        datetime NOT NULL,
+    value int      NOT NULL,
     FOREIGN KEY (sensor_id) REFERENCES sensor (id)
 );
 
 CREATE TABLE sensor
 (
     id        int PRIMARY KEY auto_increment,
-    ubicacion VARCHAR(40)
+    ubication VARCHAR(40)
 );
 
 CREATE TABLE alerta
 (
     id             int PRIMARY KEY auto_increment,
     sensor_id      int      NOT NULL,
-    fecha          datetime NOT NULL,
-    valor_medido   int      NOT NULL,
-    valor_esperado int      NOT NULL,
+    date          datetime NOT NULL,
+    analyzed_value   int      NOT NULL,
+    expected_value int      NOT NULL,
     FOREIGN KEY (sensor_id) REFERENCES sensor (id),
-    FOREIGN KEY (fecha) REFERENCES medida (fecha)
+    FOREIGN KEY (date) REFERENCES medida (date)
 );
 
-CREATE TABLE usuario
+CREATE TABLE user
 (
     email    VARCHAR(30) PRIMARY KEY,
     password VARCHAR(20) NOT NULL,
