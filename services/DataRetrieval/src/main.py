@@ -1,10 +1,12 @@
 from flask import jsonify, Flask
+from Middleware import jwt_middleware
 
 import DatabaseManager
 
 app = Flask(__name__)
 
 @app.get('/getData')
+@jwt_middleware('https://sv-jwt/check_token')
 def getData():
     rows = DatabaseManager.execute_query("SELECT * FROM medition")
     data = [{'id': row[0], 'producer_id': row[1], 'date': row[2], 'value': row[3]} for row in rows]
