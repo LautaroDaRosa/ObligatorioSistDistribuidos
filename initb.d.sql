@@ -1,4 +1,3 @@
-USE `test-db`;
 CREATE TABLE IF NOT EXISTS sensor
 (
     id        int auto_increment,
