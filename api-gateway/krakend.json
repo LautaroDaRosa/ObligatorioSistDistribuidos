@@ -14,7 +14,7 @@
           "url_pattern": "/getData",
           "encoding": "no-op",
           "method": "GET",
-          "host":["sv-dr"]
+          "host":["sv-data-retrieval"]
         }
       ],
       "input_headers": ["*"]
@@ -28,7 +28,7 @@
           "url_pattern": "/insert",
           "encoding": "no-op",
           "method": "POST",
-          "host":["sv-dr"]
+          "host":["sv-data-retrieval"]
         }
       ],
       "input_headers": ["*"]

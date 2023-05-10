@@ -12,6 +12,8 @@ services:
       MYSQL_DATABASE: test-db
     volumes:
       - ./mysql:/docker-entrypoint-initdb.d
+    ports:
+      - "3306"
     container_name: db
   rabbitmq:
     image: rabbitmq:3-alpine
@@ -27,18 +29,26 @@ services:
     build: ./producer
     ports:
       - '80'
+    depends_on:
+      - rabbitmq
   sv-consumer:
     build: ./consumer
     ports:
       - '80'
-  sv-ad:
+    depends_on:
+      - db
+  sv-data-analytics:
     build: ./services/DataAnalytics
     ports:
       - '80'
-  sv-dr:
+    depends_on:
+      - db
+  sv-data-retrieval:
     build: ./services/DataRetrieval
     ports:
       - '80'
+    depends_on:
+      - db
   sv-email:
     build: ./services/Email
     ports:
