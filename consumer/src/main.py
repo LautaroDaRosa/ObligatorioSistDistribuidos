@@ -8,7 +8,7 @@ from DatabaseManager import execute_query
 app = Flask(__name__)
 
 QUEUE_HOST = 'rabbitmq'
-QUEUE_NAME = 'measurements_queue'
+QUEUE_NAME = 'medition_queue'
 
 # Creo la conexion con el broker
 connection = pika.BlockingConnection(pika.ConnectionParameters(host=QUEUE_HOST))
@@ -23,7 +23,7 @@ def callback(ch, method, properties, body):
     # Inserta en la base
     body = json.loads(body)
     print(body)
-    execute_query("INSERT INTO medition(producer_id,date,value) VALUES(%s,%s,%s)", body)
+    execute_query("INSERT INTO medition(sensor_id,date,value) VALUES(%s,%s,%s)", body)
     print(" [x] Mensaje recibido %s" % body)
 
 
