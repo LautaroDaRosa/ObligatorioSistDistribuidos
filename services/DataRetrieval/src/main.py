@@ -1,15 +1,16 @@
-from flask import jsonify, Flask
+from flask import jsonify, Flask, request
+from Middleware import jwt_middleware
 
 import DatabaseManager
 
 app = Flask(__name__)
 
 @app.get('/getData')
-def getData():
+@jwt_middleware('http://sv-jwt/check_token')
+def getData(request):
     rows = DatabaseManager.execute_query("SELECT * FROM medition")
     data = [{'id': row[0], 'producer_id': row[1], 'date': row[2], 'value': row[3]} for row in rows]
     return jsonify(data)
-
 
 @app.post('/insert')
 def insertData():

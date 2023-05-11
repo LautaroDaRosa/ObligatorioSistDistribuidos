@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+typing
+PyJWT
+pymysql
+pydantic
+bcrypt
+cryptography

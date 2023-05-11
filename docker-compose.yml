@@ -53,3 +53,9 @@ services:
     build: ./services/Email
     ports:
       - '80'
+  sv-jwt:
+    build: jwt-api
+    ports:
+      - '80'
+    depends_on:
+      - db
