@@ -1,5 +1,0 @@
-fastapi
-uvicorn
-typing
-jwt
-pymysql

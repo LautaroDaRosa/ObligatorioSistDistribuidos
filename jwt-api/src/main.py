@@ -2,7 +2,9 @@ from fastapi import FastAPI, Header, HTTPException
 from typing import Optional
 from cryptography.hazmat.primitives import serialization, hashes
 from cryptography.hazmat.primitives.asymmetric import rsa
+from pydantic import BaseModel
 
+import bcrypt
 import DatabaseManager
 import datetime
 import jwt
@@ -32,7 +34,7 @@ with open(PUBLIC_KEY_FILE, 'wb') as f:
         format=serialization.PublicFormat.SubjectPublicKeyInfo
     ))
 
-#------------------------
+# ------------------------
 
 with open(PRIVATE_KEY_FILE, 'rb') as f:
     private_key = f.read()
@@ -40,7 +42,8 @@ with open(PRIVATE_KEY_FILE, 'rb') as f:
 with open(PUBLIC_KEY_FILE, 'rb') as f:
     public_key = f.read()
 
-#------------------------
+
+# ------------------------
 
 def generate_token(username):
     payload = {
@@ -54,6 +57,7 @@ def generate_token(username):
         algorithm='RS256'
     )
 
+
 def verify_token(token):
     try:
         payload = jwt.decode(token, public_key, algorithms=['RS256'])
@@ -63,33 +67,50 @@ def verify_token(token):
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=401, detail='Invalid token. Please log in again.')
 
-#------------------------
+
+# ------------------------
 
 def check_credentials(username, password):
-    user_credentials = DatabaseManager.check_credentials(username, password)
-    return user_credentials
-    ##if (username_db == username
-    ##    and password_db == password):
-    ##    return role
-    ##raise HTTPException(status_code = 401, detail = "Failed to authenticate. Try again")
+    print("La contraseña revisada es " + password)
 
-#------------------------
+    # Genera un salt aleatoriox
+    ##salt = bcrypt.gensalt()
+    salt = b'$2b$12$3oQ.8XHnlHaN129xbonPUe'
+
+    user_credentials = DatabaseManager.check_credentials(username, password, salt)
+
+    if user_credentials is None:
+        raise HTTPException(status_code = 401, detail = "Failed to authenticate. Try again")
+
+    username = user_credentials[0][0]
+    return username
+
+# ------------------------
 
 app = FastAPI()
+
+
+class User(BaseModel):
+    username: str
+    password: str
+
 
 @app.get("/check_token")
 def check_jwt(authorization: Optional[str] = Header(None)):
     try:
         token = authorization.split(' ')[1]
-        role = verify_token(token)
-        return {role}
+        print(token)
+        username = verify_token(token)
+        return {"username": username}
     except:
-        raise HTTPException(status_code = 403, detail = 'Unauthorized')
+        raise HTTPException(status_code=403, detail='Unauthorized')
 
-@app.get("/get_token")
-def get_jwt(username: str, password: str):
-    role = check_credentials(username, password)        
-    return {"token": generate_token(role)}
+
+@app.post("/get_token")
+def get_jwt(user: User):
+    username = check_credentials(user.username, user.password)
+    return {"token": generate_token(username)}
+
 
 if __name__ == '__main__':
-    uvicorn.run(app, port=8080, host="0.0.0.0")
+    uvicorn.run(app, port=80, host="0.0.0.0")

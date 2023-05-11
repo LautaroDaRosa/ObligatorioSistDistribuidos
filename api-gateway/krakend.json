@@ -32,6 +32,20 @@
         }
       ],
       "input_headers": ["*"]
+    },
+    {
+      "endpoint": "get_token",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/get_token",
+          "encoding": "no-op",
+          "method": "POST",
+          "host":["sv-jwt"]
+        }
+      ],
+      "input_headers": ["*"]
     }
   ],
   "output_encoding": "json",
