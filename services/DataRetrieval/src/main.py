@@ -1,12 +1,10 @@
-from datetime import datetime
 from functools import wraps
-
 from flask import jsonify, Flask, request
-from pydantic import BaseModel
-
 from Middleware import jwt_middleware
+from datetime import datetime
 
 import DatabaseManager
+import json
 
 app = Flask(__name__)
 
@@ -18,22 +16,27 @@ def jwt_protected(func):
     return wrapper
 
 
+def serialize_datetime(obj):
+    if isinstance(obj, datetime):
+        return obj.isoformat()  # Convertir el objeto datetime a una cadena en formato ISO
+
+    # Si el objeto no es un datetime, dejar que el serializador por defecto se encargue de él
+    raise TypeError(f"Object of type {obj.__class__.__name__} is not JSON serializable")
+
+
 @app.get('/getData')
 @jwt_protected
-def getData(request_middleware):
-    rows = DatabaseManager.execute_query("SELECT * FROM medition")
-    data = [{'id': row[0], 'sensor_id': row[1], 'date': row[2], 'value': row[3]} for row in rows]
-    return jsonify(data)
-
+def get_meditions(request_middleware):
+    meditions = DatabaseManager.execute_get_data()
+    return json.dumps(meditions, default = serialize_datetime), 200, {'Content-Type': 'application/json'}
 
 
 @app.post('/insertData')
 @jwt_protected
-def insertData(request_middleware):
+def insert_data(request_middleware):
     print(request.get_json())
     body = request.get_json()
-    row = DatabaseManager.execute_insert(body['sensor_id'], body['date_time'], body['value'])
-    data = {'id': row[0], 'sensor_id': row[1], 'date': row[2], 'value': row[3]}
+    data = DatabaseManager.execute_insert(body['sensor_id'], body['date_time'], body['value'])
     return jsonify(data)
 
 

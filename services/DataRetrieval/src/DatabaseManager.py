@@ -1,5 +1,3 @@
-from datetime import datetime
-
 import pymysql
 
 
@@ -25,6 +23,18 @@ def execute_query(query, params=None):
     conn.commit()
     results = cursor.fetchall()
     close_connection(conn)
+    return results
+
+
+def execute_get_data(params=None):
+    query = "SELECT * FROM medition"
+    conn = connect_to_database()
+    cursor = conn.cursor()
+    cursor.execute(query, params)
+    conn.commit()
+    results = cursor.fetchall()
+    close_connection(conn)
+
     return results
 
 
