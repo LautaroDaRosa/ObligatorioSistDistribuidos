@@ -29,8 +29,11 @@ def insert_data(request_middleware):
 
     # Declaramos la cola que va a utiliar
     channel.queue_declare(queue=QUEUE_NAME)
-
-    channel.basic_publish(exchange='', routing_key=QUEUE_NAME, body=str(body))
+    
+    str_body = str(body)
+    print(str_body)
+    
+    channel.basic_publish(exchange='', routing_key=QUEUE_NAME, body=str_body)
     return jsonify(body)
 
 if __name__ == '__main__':

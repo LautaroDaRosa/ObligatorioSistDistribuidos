@@ -1,10 +1,11 @@
 version: '2.1'
 
 services:
-  krakend:
+  api-gateway:
     build: ./api-gateway
     ports:
       - "80:8080"
+    container_name: api-gateway
   db:
     image: mysql
     environment:
@@ -13,7 +14,7 @@ services:
     volumes:
       - ./mysql:/docker-entrypoint-initdb.d
     ports:
-      - "3306"
+      - "3306:3306"
     container_name: db
   rabbitmq:
     image: rabbitmq:3-alpine
@@ -22,41 +23,50 @@ services:
       interval: 10s
       timeout: 10s
       retries: 3
-    expose:
-      - "5672"
+    ports:
+      - "5672:5672"
     container_name: rabbitmq
   sv-producer:
     build: ./services/producer
     ports:
       - '80'
     depends_on:
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
+    command: bash -c "sleep 30 && python main.py"
+    container_name: sv-producer
   sv-consumer:
     build: ./services/consumer
     ports:
       - '80'
     depends_on:
-      - db
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
+    command: bash -c "sleep 30 && python main.py"
+    container_name: sv-consumer
   sv-data-analytics:
     build: ./services/DataAnalytics
     ports:
       - '80'
     depends_on:
       - db
+    container_name: sv-data-analytics
   sv-data-retrieval:
     build: ./services/DataRetrieval
     ports:
       - '80'
     depends_on:
       - db
+    container_name: sv-data-retrieval
   sv-email:
     build: ./services/Email
     ports:
       - '80'
+    container_name: sv-email
   sv-jwt:
     build: jwt-api
     ports:
       - '80'
     depends_on:
       - db
+    container_name: sv-jwt
