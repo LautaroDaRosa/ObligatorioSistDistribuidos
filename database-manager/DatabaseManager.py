@@ -1,9 +1,8 @@
 import pymysql
-import bcrypt
 
 def connect_to_database():
     conn = pymysql.connect(
-        host='db',
+        host='localhost',
         user='root',
         password='12345',
         db='test-db',
@@ -11,8 +10,10 @@ def connect_to_database():
     )
     return conn
 
+
 def close_connection(conn):
     conn.close()
+
 
 def execute_query(query, params=None):
     conn = connect_to_database()
@@ -34,7 +35,6 @@ def check_credentials(username, password, salt, params=None):
     conn.commit()
     results = cursor.fetchall()
     close_connection(conn)
-
     if not results:
         # No se encontró el usuario en la base de datos
         print("No se encontro el user " + username)
@@ -54,6 +54,9 @@ def check_credentials(username, password, salt, params=None):
         print("La contraseña es incorrecta")
         return None
     
+
+
+
 def execute_get_data(params=None):
     query = "SELECT * FROM medition"
     conn = connect_to_database()

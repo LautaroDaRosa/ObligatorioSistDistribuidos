@@ -27,7 +27,7 @@ services:
       - "5672:5672"
     container_name: rabbitmq
   sv-producer:
-    build: ./producer
+    build: ./services/producer
     ports:
       - '80'
     depends_on:
@@ -36,7 +36,7 @@ services:
     command: bash -c "sleep 30 && python main.py"
     container_name: sv-producer
   sv-consumer:
-    build: ./consumer
+    build: ./services/consumer
     ports:
       - '80'
     depends_on:

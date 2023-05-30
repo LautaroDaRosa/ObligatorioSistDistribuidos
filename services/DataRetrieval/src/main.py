@@ -1,23 +1,34 @@
-from flask import jsonify, Flask, request
+from functools import wraps
+from flask import Flask
 from Middleware import jwt_middleware
+from datetime import datetime
 
 import DatabaseManager
+import json
 
 app = Flask(__name__)
 
-@app.get('/getData')
-@jwt_middleware('http://sv-jwt/check_token')
-def getData(request):
-    rows = DatabaseManager.execute_query("SELECT * FROM medition")
-    data = [{'id': row[0], 'sensor_id': row[1], 'date': row[2], 'value': row[3]} for row in rows]
-    return jsonify(data)
+def jwt_protected(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        middleware = jwt_middleware('http://sv-jwt/check_token')
+        return middleware(func)(*args, **kwargs)
+    return wrapper
 
-@app.post('/insert')
-def insertData():
-    rows = DatabaseManager.execute_query(
-        "INSERT INTO medition(sensor_id,date,value) VALUES(1, '2023-05-04 11:11:11', 5)")
-    data = [{'id': row[0], 'sensor_id': row[1], 'date': row[2], 'value': row[3]} for row in rows]
-    return jsonify(data)
+
+def serialize_datetime(obj):
+    if isinstance(obj, datetime):
+        return obj.isoformat()  # Convertir el objeto datetime a una cadena en formato ISO
+
+    # Si el objeto no es un datetime, dejar que el serializador por defecto se encargue de él
+    raise TypeError(f"Object of type {obj.__class__.__name__} is not JSON serializable")
+
+
+@app.get('/getData')
+@jwt_protected
+def get_meditions(request_middleware):
+    meditions = DatabaseManager.execute_get_data()
+    return json.dumps(meditions, default = serialize_datetime), 200, {'Content-Type': 'application/json'}
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=80)

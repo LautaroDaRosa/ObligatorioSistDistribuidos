@@ -25,10 +25,10 @@
       "output_encoding": "no-op",
       "backend": [
         {
-          "url_pattern": "/insert",
+          "url_pattern": "/insertData",
           "encoding": "no-op",
           "method": "POST",
-          "host":["sv-data-retrieval"]
+          "host":["sv-producer"]
         }
       ],
       "input_headers": ["*"]

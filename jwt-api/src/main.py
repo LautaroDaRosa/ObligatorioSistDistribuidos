@@ -1,10 +1,9 @@
 from fastapi import FastAPI, Header, HTTPException
 from typing import Optional
-from cryptography.hazmat.primitives import serialization, hashes
+from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from pydantic import BaseModel
 
-import bcrypt
 import DatabaseManager
 import datetime
 import jwt

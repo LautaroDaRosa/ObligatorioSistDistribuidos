@@ -1,11 +1,12 @@
 import json
-
+import time
 import pika
 from flask import Flask
 
 from DatabaseManager import execute_query
 
 app = Flask(__name__)
+time.sleep(10)
 
 QUEUE_HOST = 'rabbitmq'
 QUEUE_NAME = 'medition_queue'
