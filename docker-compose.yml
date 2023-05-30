@@ -26,13 +26,13 @@ services:
       - "5672"
     container_name: rabbitmq
   sv-producer:
-    build: ./producer
+    build: ./services/producer
     ports:
       - '80'
     depends_on:
       - rabbitmq
   sv-consumer:
-    build: ./consumer
+    build: ./services/consumer
     ports:
       - '80'
     depends_on:

@@ -4,7 +4,7 @@ from Middleware import jwt_middleware
 
 import pika
 
-QUEUE_HOST = 'localhost'
+QUEUE_HOST = 'rabbitmq'
 QUEUE_NAME = 'measurements_queue'
 
 app = Flask(__name__)
@@ -30,7 +30,7 @@ def insert_data(request_middleware):
     # Declaramos la cola que va a utiliar
     channel.queue_declare(queue=QUEUE_NAME)
 
-    channel.basic_publish(exchange='', routing_key=QUEUE_NAME, body=body)
+    channel.basic_publish(exchange='', routing_key=QUEUE_NAME, body=str(body))
     return jsonify(body)
 
 if __name__ == '__main__':
