@@ -9,7 +9,7 @@ app = Flask(__name__)
 time.sleep(10)
 
 QUEUE_HOST = 'rabbitmq'
-QUEUE_NAME = 'measurements_queue'
+QUEUE_NAME = 'medition_queue'
 
 # Creo la conexion con el broker
 connection = pika.BlockingConnection(pika.ConnectionParameters(host=QUEUE_HOST))
