@@ -1,8 +1,7 @@
 import json
-
 import pika
-from flask import Flask
 
+from flask import Flask
 from DatabaseManager import execute_query
 
 app = Flask(__name__)
@@ -11,7 +10,20 @@ QUEUE_HOST = 'rabbitmq'
 QUEUE_NAME = 'measurements_queue'
 
 # Creo la conexion con el broker
-connection = pika.BlockingConnection(pika.ConnectionParameters(host=QUEUE_HOST))
+intentos = 0
+while True:
+    try:
+        intentos += 1 
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host=QUEUE_HOST))
+    except:
+        if (intentos >= 10):
+            print("No anda la conexion de Rabbit")
+            intentos = 0
+        continue
+    if connection is not None:
+        print("Anduvo :)")
+        break
+
 channel = connection.channel()
 
 # Declaramos la cola que va a utiliar

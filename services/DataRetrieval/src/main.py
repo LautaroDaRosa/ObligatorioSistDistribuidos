@@ -1,5 +1,5 @@
 from functools import wraps
-from flask import jsonify, Flask, request
+from flask import Flask
 from Middleware import jwt_middleware
 from datetime import datetime
 
@@ -29,16 +29,6 @@ def serialize_datetime(obj):
 def get_meditions(request_middleware):
     meditions = DatabaseManager.execute_get_data()
     return json.dumps(meditions, default = serialize_datetime), 200, {'Content-Type': 'application/json'}
-
-
-@app.post('/insertData')
-@jwt_protected
-def insert_data(request_middleware):
-    print(request.get_json())
-    body = request.get_json()
-    data = DatabaseManager.execute_insert(body['sensor_id'], body['date_time'], body['value'])
-    return jsonify(data)
-
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=80)

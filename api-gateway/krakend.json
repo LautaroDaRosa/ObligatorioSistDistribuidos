@@ -28,7 +28,7 @@
           "url_pattern": "/insertData",
           "encoding": "no-op",
           "method": "POST",
-          "host":["sv-data-retrieval"]
+          "host":["sv-producer"]
         }
       ],
       "input_headers": ["*"]

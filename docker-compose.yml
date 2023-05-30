@@ -37,6 +37,7 @@ services:
       - '80'
     depends_on:
       - db
+      - rabbitmq
   sv-data-analytics:
     build: ./services/DataAnalytics
     ports:

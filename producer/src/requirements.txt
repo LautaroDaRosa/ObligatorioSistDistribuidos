@@ -1,2 +1,7 @@
 pika
 schedule
+flask
+pymysql
+requests
+pydantic
+typing
