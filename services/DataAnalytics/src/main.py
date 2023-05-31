@@ -1,61 +1,59 @@
-import asyncio
+import json
+import logging
+import sys
+import time
 
-import pymysql
-
+import requests
+import datetime
+import schedule
 import DatabaseManager
-from typing import List
-from datetime import datetime
-from pydantic import BaseModel
 
-class Data(BaseModel):
-    id: int
-    producer_id: int
-    value: float
-    date_time: datetime
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+interval_time = 10
 
-class AnalysisResult(BaseModel):
-    mean: float
-    max: float
-    min: float
+def send_mail(subject, body):
+    url = "http://sv-data-analytics/email"
+    mail = {
+        "subject": subject,
+        "body": body
+    }
 
+    return print("Envio el mail: " + mail.__str__())
+    #response = requests.post(url, data = mail)
+    #return response.status_code
 
-async def analyze_data(data_list: List[Data]) -> AnalysisResult:
-    for data in data_list:
-        print(data)
-    return "Se analizo todo"
+def periodic_analysis(interval):
+    # Obtener los datos de la base de datos
+    print("--------------------------------------------")
+    print("Se analiza con intervalo " + str(interval))
+    result = DatabaseManager.get_measurements_from(interval)
 
+    # Realizar el envío de los datos
+    for measure in result:
+        medition_id, sensor_id, ubication, date, min_value, max_value, value = measure
+        print("--------------------")
+        print(datetime.datetime.now())
+        print("--------------------")
+        print("Medition ID:", medition_id)
+        print("Sensor ID:", sensor_id)
+        print("Ubication:", ubication)
+        print("Date:", date)
+        print("Min Value:", min_value)
+        print("Max Value:", max_value)
+        print("Value:", value)
+        print("--------------------")
+        DatabaseManager.set_analyzed(medition_id)
+    # Imprimir el resultado del análisis
+    print("Análisis periódico: ")
+    print("Me duermo " + str(interval) + " segundos")
+    print("--------------------------------------------")
 
-async def periodic_analysis(interval: int):
-    while True:
-        try:
-            # Obtener los datos de la base de datos
-            rows = DatabaseManager.execute_query("SELECT * FROM medition")
+def batch_job():
+    logging.info("Ejecutando proceso batch...")
+    periodic_analysis(12000)
 
-            # Realizar el análisis de los datos
-            result = await analyze_data(rows)
+time.sleep(30)
+schedule.every(interval_time).seconds.do(batch_job)
 
-            # Imprimir el resultado del análisis
-            print(f"Análisis periódico: {result}")
-        except:
-            print("No se pudo hacer la consulta a la base de datos")
-
-        # Esperar el tiempo especificado antes de volver a realizar el análisis
-        await asyncio.sleep(interval)
-
-if __name__ == "__main__":
-    # Crear un loop de eventos
-    loop = asyncio.get_event_loop()
-
-    # Crear una tarea para realizar el análisis periódico
-    interval = 15  # segundos
-    analysis_task = loop.create_task(periodic_analysis(interval))
-    print("Empiezo a analizar")
-
-    try:
-        # Ejecutar la tarea de análisis de manera continua
-        loop.run_until_complete(analysis_task)
-    except asyncio.CancelledError:
-        pass
-
-    # Cerrar el loop de eventos al finalizar el programa
-    loop.close()
+while True:
+    schedule.run_pending()

@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS medition
      sensor_id INT NOT NULL,
      date      DATETIME NOT NULL,
      value     DOUBLE NOT NULL,
+     analyzed BOOLEAN DEFAULT 0,
      PRIMARY KEY (medition_id),
      FOREIGN KEY (sensor_id) REFERENCES sensor (sensor_id)
   );
@@ -41,14 +42,14 @@ INSERT INTO user (email, password, status, salt) VALUES ('Lauta', 'password123',
 
 INSERT INTO user (email, password, status, salt) VALUES ('Alejandra', 'password789', 'pending', 'ijkl');
 
-INSERT INTO sensor (ubication) VALUES ('Buce');
+INSERT INTO sensor (ubication, min_value, max_value) VALUES ('Buceo', 25.0, 40.0);
 
-INSERT INTO sensor (ubication) VALUES ('Malvin');
+INSERT INTO sensor (ubication, min_value, max_value) VALUES ('Pando', 45.0, 50.0);
 
-INSERT INTO sensor (ubication) VALUES ('Pando');
+INSERT INTO sensor (ubication, min_value, max_value) VALUES ('Malvin', 20.0, 50.0);
 
-INSERT INTO medition (sensor_id, date, value) VALUES (1, '2023-05-10 12:00:00', 50.0);
+INSERT INTO medition (sensor_id, date, value) VALUES (1, '2023-05-31 15:08:00', 50.0);
 
-INSERT INTO medition (sensor_id, date, value) VALUES (2, '2023-05-10 12:00:00', 45.0);
+INSERT INTO medition (sensor_id, date, value) VALUES (3, '2023-05-10 12:00:00', 45.0);
 
-INSERT INTO medition (sensor_id, date, value) VALUES (3, '2023-05-10 12:00:00', 30.0);
+INSERT INTO medition (sensor_id, date, value) VALUES (2, '2023-05-31 15:08:00', 30.0);

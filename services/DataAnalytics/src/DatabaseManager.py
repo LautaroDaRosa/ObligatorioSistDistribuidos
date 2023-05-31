@@ -1,4 +1,5 @@
 import pymysql
+import datetime
 
 def connect_to_database():
     conn = pymysql.connect(
@@ -10,76 +11,42 @@ def connect_to_database():
     )
     return conn
 
-
 def close_connection(conn):
     conn.close()
 
-
-def execute_query(query, params=None):
+def get_measurements_from(seconds):
     conn = connect_to_database()
     cursor = conn.cursor()
-    cursor.execute(query, params)
-    conn.commit()
-    results = cursor.fetchall()
-    close_connection(conn)
-    return results
-
-def check_credentials(username, password, salt, params=None):
-    conn = connect_to_database()
-    cursor = conn.cursor()
-
-    print("Voy a consultar por el user " + username)
-    query = "SELECT * FROM user WHERE email = %s"
-    values = username
-    cursor.execute(query, values)
-    conn.commit()
-    results = cursor.fetchall()
-    close_connection(conn)
-    if not results:
-        # No se encontró el usuario en la base de datos
-        print("No se encontro el user " + username)
-        print(execute_query("SELECT * FROM user"))
-        return None
-
-    print("results")
-    print(results)
-    print("----------")
-    hashed_password = results[0][1]  # El hash de la contraseña está en el tercer campo de la fila
-    expected_hash = bcrypt.hashpw(password.encode('utf-8'), salt).decode('utf-8')
-    print(hashed_password + " ---- " + expected_hash)
-    if hashed_password == expected_hash:
-        print("La contraseña es correcta")
-        return results
-    else:
-        print("La contraseña es incorrecta")
-        return None
     
+    query = """
+        SELECT a.medition_id, b.sensor_id, b.ubication, DATE_FORMAT(a.date, '%%Y-%%m-%%d %%H:%%i:%%s'), b.min_value, b.max_value, a.value
+        FROM medition a INNER JOIN sensor b ON a.sensor_id = b.sensor_id
+        WHERE a.date >= DATE_SUB(NOW(), INTERVAL %s SECOND)
+        AND (a.value < b.min_value OR a.value > b.max_value)
+        AND a.analyzed = 0;
+        """
+    cursor.execute(query, seconds)
+    resultados = cursor.fetchall()
 
+    return resultados
 
-
-def execute_get_data(params=None):
-    query = "SELECT * FROM medition"
+def set_analyzed(medition_id):
     conn = connect_to_database()
     cursor = conn.cursor()
-    cursor.execute(query, params)
+    
+    query = """
+    UPDATE medition
+    SET analyzed = 1
+    WHERE medition_id = %s;
+    """
+    cursor.execute(query, (medition_id,))
+    
+    # Confirmar los cambios en la base de datos
     conn.commit()
-    results = cursor.fetchall()
-    close_connection(conn)
 
-    return results
+    # Cerrar la conexión y el cursor
+    cursor.close()
+    conn.close()
 
-
-def execute_insert(sensor_id, date_time, value):
-    conn = connect_to_database()
-    cursor = conn.cursor()
-    query = "INSERT INTO medition(sensor_id, date, value) VALUES (%s, %s, %s)"
-    params = (sensor_id, date_time, value)
-    print("Inserto con los valores " + str(sensor_id) + " " + date_time + " " + str(value))
-    cursor.execute(query, params)
-    conn.commit()
-    last_row_id = cursor.lastrowid
-    cursor.execute("SELECT * FROM medition WHERE id=%s", (last_row_id,))
-    result = cursor.fetchone()
-    close_connection(conn)
-
-    return result
+    # Devolver algún indicador de éxito, si es necesario
+    return True
