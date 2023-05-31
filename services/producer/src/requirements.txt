@@ -1,7 +1,7 @@
-pika
-schedule
-flask
-pymysql
-requests
+fastapi
+uvicorn
 pydantic
-typing
+requests
+flask
+pika
+pymysql
