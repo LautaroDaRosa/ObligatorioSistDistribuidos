@@ -1,6 +1,5 @@
-pydantic
-datetime
-typing
-asyncio
+schedule
+requests
 pymysql
 cryptography
+datetime

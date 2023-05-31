@@ -11,6 +11,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 12345
       MYSQL_DATABASE: test-db
+      TZ: America/Argentina/Buenos_Aires
     volumes:
       - ./mysql:/docker-entrypoint-initdb.d
     ports:
