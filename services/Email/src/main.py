@@ -12,7 +12,7 @@ class Email(BaseModel):
 
 app = FastAPI()
 
-@app.post("/email")
+@app.post("/sendEmail")
 def email(email : Email):
     try:
         return JSONResponse(content = send_email(email), status_code = 200)
