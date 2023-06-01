@@ -6,7 +6,7 @@
   "cache_ttl": "300s",
   "endpoints": [
     {
-      "endpoint": "get_data",
+      "endpoint": "/get_data",
       "method": "GET",
       "output_encoding": "no-op",
       "backend": [
@@ -14,13 +14,17 @@
           "url_pattern": "/getData",
           "encoding": "no-op",
           "method": "GET",
-          "host":["sv-data-retrieval"]
+          "host": [
+            "sv-data-retrieval"
+          ]
         }
       ],
-      "input_headers": ["*"]
+      "input_headers": [
+        "*"
+      ]
     },
     {
-      "endpoint": "insert",
+      "endpoint": "/insert_data",
       "method": "POST",
       "output_encoding": "no-op",
       "backend": [
@@ -28,13 +32,17 @@
           "url_pattern": "/insertData",
           "encoding": "no-op",
           "method": "POST",
-          "host":["sv-producer"]
+          "host": [
+            "sv-producer"
+          ]
         }
       ],
-      "input_headers": ["*"]
+      "input_headers": [
+        "*"
+      ]
     },
     {
-      "endpoint": "get_token",
+      "endpoint": "/get_token",
       "method": "POST",
       "output_encoding": "no-op",
       "backend": [
@@ -42,10 +50,14 @@
           "url_pattern": "/get_token",
           "encoding": "no-op",
           "method": "POST",
-          "host":["sv-jwt"]
+          "host": [
+            "sv-jwt"
+          ]
         }
       ],
-      "input_headers": ["*"]
+      "input_headers": [
+        "*"
+      ]
     }
   ],
   "output_encoding": "json",

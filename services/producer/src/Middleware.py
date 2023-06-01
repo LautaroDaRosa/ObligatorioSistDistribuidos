@@ -1,5 +1,6 @@
-from flask import request
 import requests
+from flask import request
+
 
 def jwt_middleware(token_endpoint):
     def middleware(next):
