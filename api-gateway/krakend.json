@@ -42,24 +42,6 @@
       ]
     },
     {
-      "endpoint": "/send_email",
-      "method": "POST",
-      "output_encoding": "no-op",
-      "backend": [
-        {
-          "url_pattern": "/sendEmail",
-          "encoding": "no-op",
-          "method": "POST",
-          "host": [
-            "sv-email"
-          ]
-        }
-      ],
-      "input_headers": [
-        "*"
-      ]
-    },
-    {
       "endpoint": "/get_token",
       "method": "POST",
       "output_encoding": "no-op",

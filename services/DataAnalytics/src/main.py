@@ -14,14 +14,13 @@ subject = "ALERTA - FUGA DE AGUA"
 
 
 def send_mail(subject, body):
-    url = "http://api-gateway:8080/send_email"
+    url = "http://sv-email/email"
     mail = {
         "subject": subject,
         "body": body
     }
     response = requests.post(url, json=mail)
     return response.status_code
-
 
 def periodic_analysis(interval):
     # Obtener los datos de la base de datos

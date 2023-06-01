@@ -12,7 +12,7 @@ class Email(BaseModel):
 
 app = FastAPI()
 
-@app.post("/sendEmail")
+@app.post("/email")
 def email(email : Email):
     try:
         return JSONResponse(content = send_email(email), status_code = 200)
@@ -21,7 +21,7 @@ def email(email : Email):
         return JSONResponse(content = message, status_code = 500)
 
 def get_recipients_emails():
-    return ["sisdistribuidos.no.reply@gmail.com"]
+    return ["sisdistribuidos.no.reply@gmail.com","nicolasvelazquezperez@gmail.com"]
 
 def send_email(email):
     # Configuración del correo electrónico
