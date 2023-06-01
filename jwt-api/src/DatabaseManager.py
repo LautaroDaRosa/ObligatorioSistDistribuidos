@@ -38,15 +38,9 @@ def check_credentials(username, password, salt, params=None):
     if not results:
         # No se encontró el usuario en la base de datos
         print("No se encontro el user " + username)
-        print(execute_query("SELECT * FROM user"))
         return None
-
-    print("results")
-    print(results)
-    print("----------")
     hashed_password = results[0][1]  # El hash de la contraseña está en el tercer campo de la fila
     expected_hash = bcrypt.hashpw(password.encode('utf-8'), salt).decode('utf-8')
-    print(hashed_password + " ---- " + expected_hash)
     if hashed_password == expected_hash:
         print("La contraseña es correcta")
         return results
