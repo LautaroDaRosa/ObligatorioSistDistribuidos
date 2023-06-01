@@ -28,7 +28,20 @@ def serialize_datetime(obj):
 @jwt_protected
 def get_meditions(request_middleware):
     meditions = DatabaseManager.execute_get_data()
-    return json.dumps(meditions, default = serialize_datetime), 200, {'Content-Type': 'application/json'}
+    result = []
+    for measure in meditions:
+        medition_id, sensor_id, ubication, date, min_value, max_value, value = measure
+        measure_json = {
+            "medition_id": medition_id,
+            "sensor_id": sensor_id,
+            "ubication": ubication,
+            "date": date,
+            "min_value": min_value,
+            "max_value": max_value,
+            "value": value
+        }
+        result.append(measure_json)
+    return json.dumps(result, default=serialize_datetime), 200, {'Content-Type': 'application/json'}
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=80)

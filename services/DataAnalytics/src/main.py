@@ -22,13 +22,13 @@ def send_mail(subject, body):
     response = requests.post(url, json=mail)
     return response.status_code
 
-def periodic_analysis(interval):
+def periodic_analysis():
     # Obtener los datos de la base de datos
     logging.info("""
     --------------------------------------------")
-    Se analiza con intervalo {}
-    """.format(str(interval)))
-    result = DatabaseManager.get_measurements_from(interval)
+    Se analiza
+    """)
+    result = DatabaseManager.get_measurements_from()
 
     # Realizar el envío de los datos
     for measure in result:
@@ -49,18 +49,10 @@ def periodic_analysis(interval):
         logging.info(body)
         DatabaseManager.set_analyzed(medition_id)
         send_mail(subject, body)
-    # Imprimir el resultado del análisis
-    logging.info("""
-    --------------------------------------------
-    Análisis periódico:
-    Me duermo {} segundos
-    --------------------------------------------
-    """.format(str(interval)))
-
 
 def batch_job():
     logging.info("Ejecutando proceso batch...")
-    periodic_analysis(12000)
+    periodic_analysis()
 
 
 time.sleep(30)

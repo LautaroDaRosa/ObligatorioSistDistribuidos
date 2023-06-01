@@ -18,14 +18,7 @@ CREATE TABLE IF NOT EXISTS medition
     FOREIGN KEY (sensor_id) REFERENCES sensor (sensor_id)
 );
 
-CREATE TABLE IF NOT EXISTS alerta
-(
-    medition_id    INT    NOT NULL,
-    analyzed_value DOUBLE NOT NULL,
-    expected_value DOUBLE NOT NULL,
-    PRIMARY KEY (medition_id),
-    FOREIGN KEY (medition_id) REFERENCES medition (medition_id)
-);
+
 
 CREATE TABLE IF NOT EXISTS user
 (

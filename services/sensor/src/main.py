@@ -4,6 +4,7 @@ import logging
 import random
 import sys
 import time
+import pytz
 
 import requests
 import schedule
@@ -18,8 +19,9 @@ def send_request(message):
 
 def batch_job():
     logging.info("Ejecutando proceso batch...")
+    uruguay_timezone = pytz.timezone('America/Montevideo')
     randomValue = random.randint(10, 50)
-    message = json.dumps((1, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), randomValue))
+    message = json.dumps((1, datetime.datetime.now(tz=uruguay_timezone).strftime("%Y-%m-%d %H:%M:%S"), randomValue))
     send_request(message)
     logging.info("[x] Mensaje enviado: %s " % message)
 
