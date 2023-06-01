@@ -11,14 +11,18 @@ class Email(BaseModel):
     body: str #Cuerpo
 
 app = FastAPI()
+works = True
 
 @app.post("/email")
 def email(email : Email):
-    try:
-        return JSONResponse(content = send_email(email), status_code = 200)
-    except:
-        message = "Error executing request"
-        return JSONResponse(content = message, status_code = 500)
+    if works:
+        try:
+            return JSONResponse(content = send_email(email), status_code = 200)
+        except:
+            message = "Error executing request"
+            return JSONResponse(content = message, status_code = 500)
+    else:
+        print("El envio de mails no esta activado")
 
 def get_recipients_emails():
     return ["sisdistribuidos.no.reply@gmail.com"]

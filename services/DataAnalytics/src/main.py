@@ -12,15 +12,14 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 interval_time = 10
 
 def send_mail(subject, body):
-    url = "http://sv-data-analytics/email"
+    url = "http://sv-email/email"
     mail = {
         "subject": subject,
         "body": body
     }
-
-    return print("Envio el mail: " + mail.__str__())
-    #response = requests.post(url, data = mail)
-    #return response.status_code
+    print("Envio el mail: " + mail.__str__())
+    response = requests.post(url, data = mail)
+    return response.status_code
 
 def periodic_analysis(interval):
     # Obtener los datos de la base de datos
@@ -42,6 +41,17 @@ def periodic_analysis(interval):
         print("Max Value:", max_value)
         print("Value:", value)
         print("--------------------")
+        subject = "Alerta - Id: " + medition_id
+        body = """
+        Medition ID: {medition_id}
+        Sensor ID: {sensor_id}
+        Ubication: {ubication}
+        Date: {date}
+        Min Value: {min_value}
+        Max Value: {max_value}
+        Value: {value}
+        """
+        send_mail(subject, body)
         DatabaseManager.set_analyzed(medition_id)
     # Imprimir el resultado del análisis
     print("Análisis periódico: ")
