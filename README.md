@@ -14,7 +14,7 @@ En el body de este EP se debe pasar usuario y contraseña
 
 - /get_data
 
-- /insert
+- /insert_data
 
 Estos dos EP necesitan que se pase el Bearer token de JWT
 
