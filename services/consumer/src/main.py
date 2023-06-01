@@ -15,9 +15,8 @@ channel = connection.channel()
 channel.queue_declare(queue=QUEUE_NAME)
 
 
-def callback(body):
+def callback(ch, method, properties, body):
     body = json.loads(body)
-    print(body)
     execute_query("INSERT INTO medition(sensor_id,date,value) VALUES(%s,%s,%s)", body)
     print(" [x] Mensaje recibido %s" % body)
 
