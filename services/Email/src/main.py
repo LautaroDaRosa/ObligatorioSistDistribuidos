@@ -21,7 +21,7 @@ def email(email : Email):
         return JSONResponse(content = message, status_code = 500)
 
 def get_recipients_emails():
-    return ["sisdistribuidos.no.reply@gmail.com"]
+    return ["sisdistribuidos.no.reply@gmail.com","nicolasvelazquezperez@gmail.com"]
 
 def send_email(email):
     # Configuración del correo electrónico
