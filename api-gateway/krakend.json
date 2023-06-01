@@ -6,7 +6,7 @@
   "cache_ttl": "300s",
   "endpoints": [
     {
-      "endpoint": "/getData",
+      "endpoint": "/get_data",
       "method": "GET",
       "output_encoding": "no-op",
       "backend": [
@@ -24,7 +24,7 @@
       ]
     },
     {
-      "endpoint": "/insertData",
+      "endpoint": "/insert_data",
       "method": "POST",
       "output_encoding": "no-op",
       "backend": [

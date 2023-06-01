@@ -12,7 +12,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 
 def send_request(message):
-    url = 'http://api-gateway:8080/insertData'
+    url = 'http://api-gateway:8080/insert_data'
     return requests.post(url=url, json=message)
 
 
