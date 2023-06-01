@@ -25,7 +25,7 @@ def email(email : Email):
         print("El envio de mails no esta activado")
 
 def get_recipients_emails():
-    return ["sisdistribuidos.no.reply@gmail.com"]
+    return ["sisdistribuidos.no.reply@gmail.com","nicolasvelazquezperez@gmail.com"]
 
 def send_email(email):
     # Configuración del correo electrónico
