@@ -59,7 +59,7 @@ def check_credentials(username, password, salt, params=None):
 
 def execute_get_data(params=None):
     query = """
-        SELECT a.medition_id, b.sensor_id, b.ubication, DATE_FORMAT(a.date, '%%Y-%%m-%%d %%H:%%i:%%s'), b.min_value, b.max_value, a.value
+        SELECT a.medition_id, b.sensor_id, b.ubication, DATE_FORMAT(a.date, '%Y-%m-%d %H:%i:%s'), b.min_value, b.max_value, a.value
         FROM medition a INNER JOIN sensor b ON a.sensor_id = b.sensor_id;
     """
     conn = connect_to_database()

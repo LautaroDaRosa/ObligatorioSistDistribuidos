@@ -14,18 +14,17 @@ def connect_to_database():
 def close_connection(conn):
     conn.close()
 
-def get_measurements_from(seconds):
+def get_measurements_from():
     conn = connect_to_database()
     cursor = conn.cursor()
     
     query = """
-        SELECT a.medition_id, b.sensor_id, b.ubication, DATE_FORMAT(a.date, '%%Y-%%m-%%d %%H:%%i:%%s'), b.min_value, b.max_value, a.value
+        SELECT a.medition_id, b.sensor_id, b.ubication, DATE_FORMAT(a.date, '%Y-%m-%d %H:%i:%s'), b.min_value, b.max_value, a.value
         FROM medition a INNER JOIN sensor b ON a.sensor_id = b.sensor_id
-        WHERE a.date >= DATE_SUB(NOW(), INTERVAL %s SECOND)
-        AND (a.value < b.min_value OR a.value > b.max_value)
+        WHERE (a.value < b.min_value OR a.value > b.max_value)
         AND a.analyzed = 0;
         """
-    cursor.execute(query, seconds)
+    cursor.execute(query)
     resultados = cursor.fetchall()
 
     return resultados
