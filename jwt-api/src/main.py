@@ -1,13 +1,14 @@
-from fastapi import FastAPI, Header, HTTPException
+import datetime
 from typing import Optional
+
+import jwt
+import uvicorn
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
+from fastapi import FastAPI, Header, HTTPException
 from pydantic import BaseModel
 
 import DatabaseManager
-import datetime
-import jwt
-import uvicorn
 
 PRIVATE_KEY_FILE = 'private_key.pem'
 PUBLIC_KEY_FILE = 'public_key.pem'
@@ -70,19 +71,20 @@ def verify_token(token):
 # ------------------------
 
 def check_credentials(username, password):
-    print("La contraseña revisada es " + password)
+    # print("La contraseña revisada es " + password)
 
     # Genera un salt aleatoriox
-    ##salt = bcrypt.gensalt()
-    salt = b'$2b$12$3oQ.8XHnlHaN129xbonPUe'
+    # salt = bcrypt.gensalt()
+    # salt = b'$2b$12$3oQ.8XHnlHaN129xbonPUe'
 
-    user_credentials = DatabaseManager.check_credentials(username, password, salt)
+    user_credentials = DatabaseManager.check_credentials(username, password)
 
     if user_credentials is None:
-        raise HTTPException(status_code = 401, detail = "Failed to authenticate. Try again")
+        raise HTTPException(status_code=401, detail="Failed to authenticate. Try again")
 
     username = user_credentials[0][0]
     return username
+
 
 # ------------------------
 
