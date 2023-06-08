@@ -110,6 +110,17 @@ def get_jwt(user: User):
     username = check_credentials(user.username, user.password)
     return {"token": generate_token(username)}
 
+@app.route('/options', methods=['OPTIONS'])
+def options():
+    response_headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization', 
+        'Access-Control-Max-Age': '86400'
+    }
+
+
+    return '', 200, response_headers
 
 if __name__ == '__main__':
     uvicorn.run(app, port=80, host="0.0.0.0")

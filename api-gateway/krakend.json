@@ -58,8 +58,51 @@
       "input_headers": [
         "*"
       ]
+    },
+    {
+      "endpoint": "/options",
+      "method": "OPTIONS",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/get_token",
+          "encoding": "no-op",
+          "method": "OPTIONS",
+          "host": [
+            "sv-jwt"
+          ]
+        }
+      ],
+      "input_headers": [
+        "*"
+      ]
+    },
+    {
+      "endpoint": "/get_data",
+      "method": "OPTIONS",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/options",
+          "encoding": "no-op",
+          "method": "OPTIONS",
+          "host": [
+            "sv-jwt"
+          ]
+        }
+      ],
+      "input_headers": [
+        "*"
+      ]
     }
   ],
   "output_encoding": "json",
-  "port": 8080
+  "port": 8080,
+  "extra_config": {
+    "security/cors": {
+      "allow_origins": ["*"],
+      "allow_methods": ["GET", "HEAD", "POST", "OPTIONS", "PATCH", "DELETE"],
+      "debug": true
+    }
+  }
 }
