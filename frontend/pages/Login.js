@@ -82,9 +82,11 @@ const Login = () => {
             className={styles.login_input}
           />
         </div>
-        <button type="submit" className={styles.login_button} onClick={handleButtonClick}>
-          Iniciar sesión
-        </button>
+        <center>
+          <button type="submit" className={styles.login_button} onClick={handleButtonClick}>
+            Iniciar sesión
+          </button>
+        </center>
       </form>
     </div>
   );
