@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import axios from 'axios';
 import styles from './login.module.css';
 import { useRouter } from 'next/router';
 
@@ -10,12 +9,22 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost/get_token', {
-        username: username,
-        password: password
+      const response = await fetch('http://localhost/get_token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password
+        })
       });
-      const data = response.data;
-      const token = data.token;
+
+      // Obtener la respuesta como texto
+      const responseText = await response.text();
+      //alert(responseText);
+      // Extraer el token del texto de respuesta
+      const token = JSON.parse(responseText).token;
 
       console.log('Datos de usuario:', response.data);
       console.log('Token:', token);
@@ -25,9 +34,6 @@ const Login = () => {
           pathname: '/datapage',
         }
       );
-      //router.push(`/datalist?token=${token}`);
-      //router.push('/datalist', undefined, { shallow: true, state: { token: token } });
-      //alert(`Solicitud de autenticación enviada con éxito.\nUsuario: ${username}\nContraseña: ${password}\nDestino: http://localhost/get_token`);
     } catch (error) {
       console.error('Error al obtener los datos:', error);
       alert('Se produjo un error al realizar la solicitud de autenticación.' + error);

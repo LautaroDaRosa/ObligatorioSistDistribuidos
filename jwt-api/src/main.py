@@ -3,6 +3,7 @@ from typing import Optional
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 
 import DatabaseManager
 import datetime
@@ -88,7 +89,6 @@ def check_credentials(username, password):
 
 app = FastAPI()
 
-
 class User(BaseModel):
     username: str
     password: str
@@ -118,8 +118,7 @@ def options():
         'Access-Control-Allow-Headers': 'Content-Type, Authorization', 
         'Access-Control-Max-Age': '86400'
     }
-
-
+    
     return '', 200, response_headers
 
 if __name__ == '__main__':

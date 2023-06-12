@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
 const DataList = () => {
   const [data, setData] = useState([]);
@@ -10,15 +9,21 @@ const DataList = () => {
       try {
         const token = localStorage.getItem('token');
         alert(token);
-        const response = await axios.get('http://localhost/get_token', {
-          //headers: {
-          //  Authorization: `Bearer ${token}`
-          //}
+        /*
+        const response = await axios.get('http://localhost/get_data', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        */
+        const response = await fetch('http://localhost/get_data',{
+          method: 'POST',
         });
         setData(response.data);
         setIsLoading(false);
       } catch (error) {
         console.error('Error al obtener los datos:', error);
+        alert(error.message);
         setIsLoading(false);
       }
     };
@@ -30,8 +35,12 @@ const DataList = () => {
     return <div>Cargando...</div>;
   }
 
-  if (!data || data.length === 0) {
+  if (!data) {
     return <div>No se encontraron datos.</div>;
+  }
+
+  if (data.length === 0) {
+    return <div>Hay 0 datos.</div>;
   }
 
   return (

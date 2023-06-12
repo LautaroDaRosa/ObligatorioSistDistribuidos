@@ -60,14 +60,14 @@
       ]
     },
     {
-      "endpoint": "/options",
+      "endpoint": "/get_token",
       "method": "OPTIONS",
       "output_encoding": "no-op",
       "backend": [
         {
-          "url_pattern": "/get_token",
+          "url_pattern": "/options",
           "encoding": "no-op",
-          "method": "OPTIONS",
+          "method": "POST",
           "host": [
             "sv-jwt"
           ]
@@ -85,7 +85,7 @@
         {
           "url_pattern": "/options",
           "encoding": "no-op",
-          "method": "OPTIONS",
+          "method": "POST",
           "host": [
             "sv-jwt"
           ]
@@ -99,10 +99,13 @@
   "output_encoding": "json",
   "port": 8080,
   "extra_config": {
-    "security/cors": {
+    "github_com/devopsfaith/krakend-cors": {
       "allow_origins": ["*"],
-      "allow_methods": ["GET", "HEAD", "POST", "OPTIONS", "PATCH", "DELETE"],
-      "debug": true
+      "allow_methods": ["GET", "POST", "OPTIONS"],
+      "allow_headers": ["*"],
+      "expose_headers": [],
+      "allow_credentials": false,
+      "max_age": "12h"
     }
   }
 }

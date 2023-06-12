@@ -1,12 +1,13 @@
 from functools import wraps
-from flask import Flask
+from fastapi import FastAPI
 from Middleware import jwt_middleware
 from datetime import datetime
+import uvicorn
 
 import DatabaseManager
 import json
 
-app = Flask(__name__)
+app = FastAPI()
 
 def jwt_protected(func):
     @wraps(func)
@@ -25,8 +26,7 @@ def serialize_datetime(obj):
 
 
 @app.get('/getData')
-@jwt_protected
-def get_meditions(request_middleware):
+def get_meditions():
     meditions = DatabaseManager.execute_get_data()
     result = []
     for measure in meditions:
@@ -43,5 +43,6 @@ def get_meditions(request_middleware):
         result.append(measure_json)
     return json.dumps(result, default=serialize_datetime), 200, {'Content-Type': 'application/json'}
 
+
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=80)
+    uvicorn.run(app, port=80, host="0.0.0.0")

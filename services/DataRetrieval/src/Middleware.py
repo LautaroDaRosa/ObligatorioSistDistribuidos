@@ -1,4 +1,3 @@
-from flask import request
 import requests
 
 
@@ -6,7 +5,7 @@ def jwt_middleware(token_endpoint):
     def middleware(next):
         def handler(*args, **kwargs):
             print("Empieza middleware")
-            authorization_header = request.headers.get('Authorization')
+            authorization_header = requests.headers.get('Authorization')
 
             if not authorization_header:
                 return {'message': 'Unauthorized'}, 401
@@ -24,7 +23,7 @@ def jwt_middleware(token_endpoint):
             ##username = response.json()['username']
             ##request.username = username
 
-            return next(request, *args, **kwargs)
+            return next(requests, *args, **kwargs)
 
         return handler
 
