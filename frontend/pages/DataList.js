@@ -1,29 +1,37 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 const DataList = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('token');
-        alert(token);
-        /*
-        const response = await axios.get('http://localhost/get_data', {
+        const response = await fetch('http://localhost/get_data', {
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
-        */
-        const response = await fetch('http://localhost/get_data',{
-          method: 'POST',
+
+        const responseData = await response.json();
+        const measurements = responseData.measurements;
+        const measurementStrings = measurements.map(measurement => {
+          return `Medición ID: ${measurement.medition_id}\nSensor ID: ${measurement.sensor_id}\nUbicación: ${measurement.ubication}\nFecha: ${measurement.date}\nValor Mínimo: ${measurement.min_value}\nValor Máximo: ${measurement.max_value}\nValor: ${measurement.value}`;
         });
-        setData(response.data);
+
+        setData(measurementStrings);
         setIsLoading(false);
       } catch (error) {
+          alert('Acceso no autorizado. Por favor, inicie sesión nuevamente.');
+          router.push(
+            {
+              pathname: '/login',
+            }
+          );
         console.error('Error al obtener los datos:', error);
-        alert(error.message);
         setIsLoading(false);
       }
     };
@@ -35,18 +43,14 @@ const DataList = () => {
     return <div>Cargando...</div>;
   }
 
-  if (!data) {
-    return <div>No se encontraron datos.</div>;
-  }
-
   if (data.length === 0) {
-    return <div>Hay 0 datos.</div>;
+    return <div>No se encontraron datos.</div>;
   }
 
   return (
     <ul>
-      {data.map(item => (
-        <li key={item.id}>{item.name}</li>
+      {data.map((item, index) => (
+        <li key={index}>{item}</li>
       ))}
     </ul>
   );

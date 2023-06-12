@@ -1,11 +1,12 @@
 import requests
-
+from starlette.requests import Request
 
 def jwt_middleware(token_endpoint):
-    def middleware(next):
+    def middleware(next, request):
         def handler(*args, **kwargs):
             print("Empieza middleware")
-            authorization_header = requests.headers.get('Authorization')
+
+            authorization_header = request.headers.get('Authorization')
 
             if not authorization_header:
                 return {'message': 'Unauthorized'}, 401
@@ -23,7 +24,7 @@ def jwt_middleware(token_endpoint):
             ##username = response.json()['username']
             ##request.username = username
 
-            return next(requests, *args, **kwargs)
+            return next(request, *args, **kwargs)
 
         return handler
 
