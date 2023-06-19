@@ -1,9 +1,9 @@
-import Login from '../Login.js';
+import LoginComponent from '../LoginComponent.js';
 
 const HomePage = () => {
   return (
     <div>
-      <Login />
+      <LoginComponent />
     </div>
   );
 };
