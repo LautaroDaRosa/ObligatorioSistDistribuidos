@@ -18,25 +18,27 @@ CREATE TABLE IF NOT EXISTS medition
     FOREIGN KEY (sensor_id) REFERENCES sensor (sensor_id)
 );
 
-
-
 CREATE TABLE IF NOT EXISTS user
 (
-    email    VARCHAR(30)  NOT NULL,
-    password VARCHAR(200) NOT NULL,
+    username VARCHAR(30)  NOT NULL,
+    password VARCHAR(100) NOT NULL,
     status   VARCHAR(20)  NOT NULL,
-    salt     VARCHAR(20)  NOT NULL,
-    PRIMARY KEY (email)
+    role     VARCHAR(20)  NOT NULL,
+    salt     VARCHAR(50)  NOT NULL,
+    PRIMARY KEY (username)
 );
 
-INSERT INTO user (email, password, status, salt)
-VALUES ('Nicolas', '$2b$12$3oQ.8XHnlHaN129xbonPUeOwxphDbua.BwZSRODMCz6cLOqkLAYi6', 'active', 'abcd');
-
-INSERT INTO user (email, password, status, salt)
-VALUES ('Lauta', 'password123', 'removed', 'ijkl');
-
-INSERT INTO user (email, password, status, salt)
-VALUES ('Alejandra', 'password789', 'pending', 'ijkl');
-
+INSERT INTO user (username, password, status, role, salt)
+VALUES ('nicolas', '$2b$12$pIG5seHSpwTd548T0YIqlOvg766NTF55SXeLVIzLMFbEhWl11hiTi', 'ACTIVE', 'ROOT',
+        '$2b$12$pIG5seHSpwTd548T0YIqlO');
+# pass = xWRY2q774EL&
+INSERT INTO user (username, password, status, role, salt)
+VALUES ('lautaro', '$2b$12$BM0T33nFoKXuCkr6B/OhO.j5SIp650kkm2oZskVbSUHHih1vrJoi6', 'INACTIVE', 'ROOT',
+        '$2b$12$BM0T33nFoKXuCkr6B/OhO.');
+# pass = j$3*D947Neau
+INSERT INTO user (username, password, status, role, salt)
+VALUES ('alejandra', '$2b$12$4gkdgWUmy3XUENxvpwS/IedSdXct1j.yUtupDk7.KJbwURWUBmi5e', 'INACTIVE', 'ROOT',
+        '$2b$12$4gkdgWUmy3XUENxvpwS/Ie');
+# pass = M9qOfx1%U^1q
 INSERT INTO sensor (ubication, min_value, max_value)
 VALUES ('Malvin', 25.0, 40.0);
