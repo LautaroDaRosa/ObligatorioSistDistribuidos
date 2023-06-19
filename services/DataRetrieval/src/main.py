@@ -1,34 +1,29 @@
 from functools import wraps
-from flask import Flask
-from Middleware import jwt_middleware
-from datetime import datetime
-
+from fastapi import FastAPI
+import uvicorn
 import DatabaseManager
-import json
+from Middleware import jwt_middleware
 
-app = Flask(__name__)
+app = FastAPI()
+
+from functools import wraps
+from starlette.requests import Request
 
 def jwt_protected(func):
     @wraps(func)
-    def wrapper(*args, **kwargs):
+    def wrapper(request: Request,*args, **kwargs):
         middleware = jwt_middleware('http://sv-jwt/check_token')
-        return middleware(func)(*args, **kwargs)
+        return middleware(func, request)(*args, **kwargs)
     return wrapper
-
-
-def serialize_datetime(obj):
-    if isinstance(obj, datetime):
-        return obj.isoformat()  # Convertir el objeto datetime a una cadena en formato ISO
-
-    # Si el objeto no es un datetime, dejar que el serializador por defecto se encargue de él
-    raise TypeError(f"Object of type {obj.__class__.__name__} is not JSON serializable")
-
 
 @app.get('/getData')
 @jwt_protected
-def get_meditions(request_middleware):
+def get_meditions(request: Request):
+    print("INTENTO PEGARLE A LA DB")
     meditions = DatabaseManager.execute_get_data()
     result = []
+    print("MEDITIONS: ")
+    print(meditions)
     for measure in meditions:
         medition_id, sensor_id, ubication, date, min_value, max_value, value = measure
         measure_json = {
@@ -41,7 +36,9 @@ def get_meditions(request_middleware):
             "value": value
         }
         result.append(measure_json)
-    return json.dumps(result, default=serialize_datetime), 200, {'Content-Type': 'application/json'}
+    print("RESULTS: ")
+    print(result)
+    return {"measurements": result}
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=80)
+    uvicorn.run(app, port=80, host="0.0.0.0")

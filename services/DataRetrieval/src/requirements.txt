@@ -1,5 +1,8 @@
-flask
+fastapi
 pymysql
 requests
 pydantic
 typing
+uvicorn
+starlette
+cryptography

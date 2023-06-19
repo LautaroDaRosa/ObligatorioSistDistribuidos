@@ -11,7 +11,7 @@ class Email(BaseModel):
     body: str #Cuerpo
 
 app = FastAPI()
-works = True
+works = False
 
 @app.post("/email")
 def email(email : Email):

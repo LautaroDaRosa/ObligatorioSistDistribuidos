@@ -1,11 +1,11 @@
-from flask import request
 import requests
-
+from starlette.requests import Request
 
 def jwt_middleware(token_endpoint):
-    def middleware(next):
+    def middleware(next, request):
         def handler(*args, **kwargs):
             print("Empieza middleware")
+
             authorization_header = request.headers.get('Authorization')
 
             if not authorization_header:
