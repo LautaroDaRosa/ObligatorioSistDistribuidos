@@ -1,9 +1,9 @@
-import DataList from '../DataList.js';
+import DataListComponent from '../DataListComponent.js';
 
 const DataListPage = () => {
   return (
     <div>
-      <DataList />
+      <DataListComponent />
     </div>
   );
 };
