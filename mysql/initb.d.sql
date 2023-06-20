@@ -40,5 +40,9 @@ INSERT INTO user (username, password, status, role, salt)
 VALUES ('alejandra', '$2b$12$4gkdgWUmy3XUENxvpwS/IedSdXct1j.yUtupDk7.KJbwURWUBmi5e', 'INACTIVE', 'ROOT',
         '$2b$12$4gkdgWUmy3XUENxvpwS/Ie');
 # pass = M9qOfx1%U^1q
+INSERT INTO user (username, password, status, role, salt)
+VALUES ('sensor01', '$2b$12$5wsRmKglwG.Q6jbg/xhFz.liIyKxF/fWDNMFa7wGauO0P8qNFhlDS', 'ACTIVE', 'ROOT',
+        '$2b$12$5wsRmKglwG.Q6jbg/xhFz.');
+# pass = 99l0*2%aeX4Z
 INSERT INTO sensor (ubication, min_value, max_value)
 VALUES ('Malvin', 25.0, 40.0);
