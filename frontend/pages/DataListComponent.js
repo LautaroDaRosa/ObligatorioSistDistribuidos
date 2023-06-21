@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { Spinner } from 'react-bootstrap';
 
 const DataListComponent = () => {
   const [data, setData] = useState([]);
@@ -50,11 +51,11 @@ const DataListComponent = () => {
   }, []);
 
   if (isLoading) {
-    return <div>Cargando...</div>;
-  }
-
-  if (data.length === 0) {
-    return <div>No se encontraron datos.</div>;
+    return  <div className="d-flex justify-content-center align-items-center vh-100">
+    <Spinner animation="border" role="status">
+      <span className="visually-hidden">Cargando...</span>
+    </Spinner>
+  </div>;
   }
 
   const tableStyle = {
