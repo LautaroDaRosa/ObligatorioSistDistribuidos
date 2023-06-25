@@ -25,7 +25,7 @@ def email(email : Email):
         print("El envio de mails no esta activado")
 
 def get_recipients_emails():
-    return ["sisdistribuidos.no.reply@gmail.com","nicolasvelazquezperez@gmail.com"]
+    return ["sisdistribuidos.no.reply@gmail.com"]
 
 def send_email(email):
     # Configuración del correo electrónico
@@ -61,10 +61,8 @@ def send_email(email):
             sended_emails += 1
         except Exception as e:
             print("Error al enviar el correo electrónico:")
-            print("El error es: " +  e.__str__())
     server.quit()
     message = "Se enviaron " + str(sended_emails) + " de " + str(recipient_emails_count)
-    print(message)
     return message
 
 if __name__ == "__main__":

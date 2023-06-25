@@ -19,11 +19,10 @@ def jwt_protected(func):
 @app.get('/getData')
 @jwt_protected
 def get_meditions(request: Request):
-    print("INTENTO PEGARLE A LA DB")
     meditions = DatabaseManager.execute_get_data()
     result = []
-    print("MEDITIONS: ")
-    print(meditions)
+    #print("Mediciones: ")
+    #print(meditions)
     for measure in meditions:
         medition_id, sensor_id, ubication, date, min_value, max_value, value = measure
         measure_json = {
@@ -36,8 +35,8 @@ def get_meditions(request: Request):
             "value": value
         }
         result.append(measure_json)
-    print("RESULTS: ")
-    print(result)
+    #print("Resultados: ")
+    #print(result)
     return {"measurements": result}
 
 if __name__ == '__main__':

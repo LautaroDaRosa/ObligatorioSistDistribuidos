@@ -31,7 +31,7 @@ def check_credentials(username, password, params=None):
     conn = connect_to_database()
     cursor = conn.cursor()
 
-    # print("Voy a consultar por el user " + username)
+    # print("Se consulta por el user " + username)
     query = "SELECT * FROM user WHERE username = %s"
     values = username
     cursor.execute(query, values)
@@ -42,7 +42,7 @@ def check_credentials(username, password, params=None):
     if not results:
         # No se encontró el usuario en la base de datos
         print("No se encontro el user " + username)
-        print(execute_query("SELECT * FROM user"))
+        #print(execute_query("SELECT * FROM user"))
         return None
 
     # print("results")

@@ -38,15 +38,15 @@ def check_credentials(username, password, salt, params=None):
     if not results:
         # No se encontró el usuario en la base de datos
         print("No se encontro el user " + username)
-        print(execute_query("SELECT * FROM user"))
+        #print(execute_query("SELECT * FROM user"))
         return None
 
-    print("results")
-    print(results)
-    print("----------")
+    #print("results")
+    #print(results)
+    #print("----------")
     hashed_password = results[0][1]  # El hash de la contraseña está en el tercer campo de la fila
     expected_hash = bcrypt.hashpw(password.encode('utf-8'), salt).decode('utf-8')
-    print(hashed_password + " ---- " + expected_hash)
+    #print(hashed_password + " ---- " + expected_hash)
     if hashed_password == expected_hash:
         print("La contraseña es correcta")
         return results
@@ -74,7 +74,7 @@ def execute_insert(sensor_id, date_time, value):
     cursor = conn.cursor()
     query = "INSERT INTO medition(sensor_id, date, value) VALUES (%s, %s, %s)"
     params = (sensor_id, date_time, value)
-    print("Inserto con los valores " + str(sensor_id) + " " + date_time + " " + str(value))
+    print("Se inserta en la BD -> " + str(sensor_id) + " " + date_time + " " + str(value))
     cursor.execute(query, params)
     conn.commit()
     last_row_id = cursor.lastrowid
