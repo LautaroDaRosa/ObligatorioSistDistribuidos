@@ -100,7 +100,7 @@ class User(BaseModel):
 def check_jwt(authorization: Optional[str] = Header(None)):
     try:
         token = authorization.split(' ')[1]
-        print(token)
+        #print(token)
         username = verify_token(token)
         return {"username": username}
     except:
