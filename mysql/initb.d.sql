@@ -2,8 +2,8 @@ CREATE TABLE IF NOT EXISTS sensor
 (
     sensor_id INT auto_increment,
     ubication VARCHAR(40),
-    max_value DOUBLE,
-    min_value DOUBLE,
+    max_value DOUBLE NOT NULL,
+    min_value DOUBLE NOT NULL,
     PRIMARY KEY (sensor_id)
 );
 
@@ -45,4 +45,4 @@ VALUES ('sensor01', '$2b$12$5wsRmKglwG.Q6jbg/xhFz.liIyKxF/fWDNMFa7wGauO0P8qNFhlD
         '$2b$12$5wsRmKglwG.Q6jbg/xhFz.');
 # pass = 99l0*2%aeX4Z
 INSERT INTO sensor (ubication, min_value, max_value)
-VALUES ('Malvin', 25.0, 40.0);
+VALUES ('Malvin', 15.0, 45.0);

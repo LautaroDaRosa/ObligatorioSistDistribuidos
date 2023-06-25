@@ -1,7 +1,6 @@
 from datetime import datetime
-from typing import Optional
-
 from pydantic import BaseModel
+from typing import Optional
 
 
 class Medition(BaseModel):
@@ -17,7 +16,7 @@ class Medition(BaseModel):
             'date': self.date.isoformat(),
             'value': self.value
         }
-    
+
     def to_json(self):
         return {
             'medition_id': self.medition_id,
