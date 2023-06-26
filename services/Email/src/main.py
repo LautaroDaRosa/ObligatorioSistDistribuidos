@@ -13,7 +13,7 @@ class Email(BaseModel):
 
 
 app = FastAPI()
-works = False
+works = True
 
 
 @app.post("/email")
