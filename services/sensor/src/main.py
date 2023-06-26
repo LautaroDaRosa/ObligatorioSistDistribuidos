@@ -1,13 +1,12 @@
 import datetime
 import json
 import logging
-import random
-import sys
-import time
-
 import pytz
+import random
 import requests
 import schedule
+import sys
+import time
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 

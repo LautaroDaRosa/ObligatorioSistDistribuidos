@@ -1,13 +1,11 @@
 import datetime
-from typing import Optional
-
 import jwt
 import uvicorn
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from fastapi import FastAPI, Header, HTTPException
 from pydantic import BaseModel
-from fastapi.middleware.cors import CORSMiddleware
+from typing import Optional
 
 import DatabaseManager
 
@@ -72,12 +70,6 @@ def verify_token(token):
 # ------------------------
 
 def check_credentials(username, password):
-    # print("La contraseña revisada es " + password)
-
-    # Genera un salt aleatoriox
-    # salt = bcrypt.gensalt()
-    # salt = b'$2b$12$3oQ.8XHnlHaN129xbonPUe'
-
     user_credentials = DatabaseManager.check_credentials(username, password)
 
     if user_credentials is None:
@@ -91,6 +83,7 @@ def check_credentials(username, password):
 
 app = FastAPI()
 
+
 class User(BaseModel):
     username: str
     password: str
@@ -100,7 +93,6 @@ class User(BaseModel):
 def check_jwt(authorization: Optional[str] = Header(None)):
     try:
         token = authorization.split(' ')[1]
-        #print(token)
         username = verify_token(token)
         return {"username": username}
     except:
@@ -112,16 +104,18 @@ def get_jwt(user: User):
     username = check_credentials(user.username, user.password)
     return {"token": generate_token(username)}
 
+
 @app.route('/options', methods=['OPTIONS'])
 def options():
     response_headers = {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization', 
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
         'Access-Control-Max-Age': '86400'
     }
-    
+
     return '', 200, response_headers
+
 
 if __name__ == '__main__':
     uvicorn.run(app, port=80, host="0.0.0.0")

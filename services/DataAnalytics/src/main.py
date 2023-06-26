@@ -1,10 +1,9 @@
 import datetime
 import logging
-import sys
-import time
-
 import requests
 import schedule
+import sys
+import time
 
 import DatabaseManager
 
@@ -22,15 +21,14 @@ def send_mail(subject, body):
     response = requests.post(url, json=mail)
     return response.status_code
 
+
 def periodic_analysis():
-    # Obtener los datos de la base de datos
     logging.info("""
     --------------------------------------------")
     Se analiza
     """)
     result = DatabaseManager.get_measurements_from()
 
-    # Realizar el envío de los datos
     for measure in result:
         medition_id, sensor_id, ubication, date, min_value, max_value, value = measure
         body = """
@@ -49,6 +47,7 @@ def periodic_analysis():
         logging.info(body)
         DatabaseManager.set_analyzed(medition_id)
         send_mail(subject, body)
+
 
 def batch_job():
     logging.info("Ejecutando proceso batch...")

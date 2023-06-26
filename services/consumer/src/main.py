@@ -1,5 +1,4 @@
 import json
-
 import pika
 from flask import Flask
 

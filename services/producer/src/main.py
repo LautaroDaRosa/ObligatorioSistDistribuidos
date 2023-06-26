@@ -1,10 +1,9 @@
-from functools import wraps
-
 import pika
 import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.exceptions import HTTPException
 from fastapi.responses import JSONResponse
+from functools import wraps
 
 from Middleware import jwt_middleware
 

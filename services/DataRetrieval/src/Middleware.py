@@ -1,5 +1,5 @@
 import requests
-from starlette.requests import Request
+
 
 def jwt_middleware(token_endpoint):
     def middleware(next, request):
@@ -23,9 +23,6 @@ def jwt_middleware(token_endpoint):
             if not response.ok:
                 print("No autorizado")
                 return {'message': 'Invalid token'}, 401
-
-            ##username = response.json()['username']
-            ##request.username = username
 
             return next(request, *args, **kwargs)
 

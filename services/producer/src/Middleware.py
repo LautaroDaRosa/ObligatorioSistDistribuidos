@@ -23,9 +23,6 @@ def jwt_middleware(token_endpoint):
             if not response.ok:
                 raise HTTPException(status_code=401, detail='Invalid token')
 
-            ##username = response.json()['username']
-            ##request.username = username
-
             return await next(request, *args, **kwargs)
 
         return handler

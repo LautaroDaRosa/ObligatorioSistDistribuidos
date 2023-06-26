@@ -30,8 +30,6 @@ def execute_query(query, params=None):
 def check_credentials(username, password, params=None):
     conn = connect_to_database()
     cursor = conn.cursor()
-
-    # print("Se consulta por el user " + username)
     query = "SELECT * FROM user WHERE username = %s"
     values = username
     cursor.execute(query, values)
@@ -40,18 +38,12 @@ def check_credentials(username, password, params=None):
     close_connection(conn)
 
     if not results:
-        # No se encontró el usuario en la base de datos
         print("No se encontro el user " + username)
-        #print(execute_query("SELECT * FROM user"))
         return None
 
-    # print("results")
-    # print(results)
-    # print("----------")
     hashed_password = results[0][1]  # El hash de la contraseña está en el tercer campo de la fila
     salt = str(results[0][4])
     expected_hash = bcrypt.hashpw(password.encode('utf-8'), salt.encode('utf-8')).decode('utf-8')
-    # print(hashed_password + " ---- " + expected_hash)
     if hashed_password == expected_hash:
         print("La contraseña es correcta")
         return results
